@@ -1,0 +1,23 @@
+[project]
+name = "sdxl-v1-0"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Md Safin Sarker",email = "safinsarker1122@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "datasets (>=3.6.0,<4.0.0)",
+    "accelerate (==0.29.2)",
+    "transformers (==4.39.3)",
+    "peft (>=0.15.2,<0.16.0)"
+]
+
+[tool.poetry]
+packages = [{include = "sdxl_v1"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,571 @@
+{
+  "id": "dc64fd4d-9eee-45e6-abef-36a67c3dd183",
+  "revision": 0,
+  "last_node_id": 4,
+  "last_link_id": 14,
+  "nodes": [
+    {
+      "id": "clip_text_negative",
+      "type": "CLIPTextEncode",
+      "pos": [
+        256.7580871582031,
+        10.123605728149414
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "realistic, photorealistic, tripod stand,two men,3D render, ultra-detailed, hyperrealism, textured, shadows, reflections, noise, blurry, messy composition, multiple people, extra limbs, distorted hands, disfigured, facial features, eyes, nose, mouth, wrinkles, skin details, overly complex background, cluttered workspace, highly detailed textures, glossy, overexposed, dynamic lighting, cinematic, anime, fantasy, surreal"
+      ]
+    },
+    {
+      "id": "clip_text_positive",
+      "type": "CLIPTextEncode",
+      "pos": [
+        254.0114288330078,
+        -283.883544921875
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "Laerdalstyle, faceless, minimalistic vector illustration of a man with black hair wearing sunglasses, a green long-sleeved shirt, blue pants, and teal shoes. He is sitting on a blue bicycle, gripping the handlebars and pedaling. The illustration follows a flat design style, with no visible facial features except for the sunglasses, set against a plain white background."
+      ]
+    },
+    {
+      "id": 4,
+      "type": "SaveImage",
+      "pos": [
+        706.833740234375,
+        28.935636520385742
+      ],
+      "size": [
+        355.6434631347656,
+        481.0663146972656
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 14
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.27"
+      },
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": "sampler",
+      "type": "KSampler",
+      "pos": [
+        731.041748046875,
+        -355.2107849121094
+      ],
+      "size": [
+        315,
+        262
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 5
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 9
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 6
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            10
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        679204546769989,
+        "fixed",
+        30,
+        20,
+        "dpm_2",
+        "karras",
+        1
+      ]
+    },
+    {
+      "id": "vae_decode",
+      "type": "VAEDecode",
+      "pos": [
+        1082.966552734375,
+        -360.26873779296875
+      ],
+      "size": [
+        210,
+        46
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 10
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            12,
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 3,
+      "type": "SVGPreview",
+      "pos": [
+        1140.366943359375,
+        99.39004516601562
+      ],
+      "size": [
+        315,
+        246
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "svg_strings",
+          "type": "STRING",
+          "widget": {
+            "name": "svg_strings"
+          },
+          "link": 13
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "ComfyUI-ToSVG",
+        "ver": "f0e89212429438405c06a7248411911629e12327",
+        "Node name for S&R": "SVGPreview"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 2,
+      "type": "ConvertRasterToVectorColor",
+      "pos": [
+        1175.013916015625,
+        -262.1589660644531
+      ],
+      "size": [
+        340.20001220703125,
+        274
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "shape": 6,
+          "type": "STRING",
+          "slot_index": 0,
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI-ToSVG",
+        "ver": "f0e89212429438405c06a7248411911629e12327",
+        "Node name for S&R": "ConvertRasterToVectorColor"
+      },
+      "widgets_values": [
+        "stacked",
+        "spline",
+        4,
+        6,
+        16,
+        60,
+        4,
+        10,
+        45,
+        3
+      ]
+    },
+    {
+      "id": "empty_latent",
+      "type": "EmptyLatentImage",
+      "pos": [
+        301.630615234375,
+        290.6402893066406
+      ],
+      "size": [
+        315,
+        106
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": "checkpoint_loader",
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        -147.69683837890625,
+        19.463266372680664
+      ],
+      "size": [
+        315,
+        98
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 1,
+          "links": [
+            11
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 2,
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "sd_xl_base_1.0.safetensors"
+      ]
+    },
+    {
+      "id": "lora_loader",
+      "type": "LoraLoader",
+      "pos": [
+        -136.9153594970703,
+        -284.63360595703125
+      ],
+      "size": [
+        315,
+        126
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 1,
+          "links": [
+            2,
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.15",
+        "Node name for S&R": "LoraLoader"
+      },
+      "widgets_values": [
+        "SDXL_LoRa_laerdalStyle_new.safetensors",
+        1.0000000000000002,
+        1
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      "checkpoint_loader",
+      0,
+      "lora_loader",
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      "lora_loader",
+      1,
+      "clip_text_positive",
+      0,
+      "CLIP"
+    ],
+    [
+      3,
+      "lora_loader",
+      0,
+      "sampler",
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      "lora_loader",
+      1,
+      "clip_text_negative",
+      0,
+      "CLIP"
+    ],
+    [
+      5,
+      "clip_text_positive",
+      0,
+      "sampler",
+      1,
+      "CONDITIONING"
+    ],
+    [
+      6,
+      "empty_latent",
+      0,
+      "sampler",
+      3,
+      "LATENT"
+    ],
+    [
+      7,
+      "checkpoint_loader",
+      2,
+      "vae_decode",
+      1,
+      "VAE"
+    ],
+    [
+      9,
+      "clip_text_negative",
+      0,
+      "sampler",
+      2,
+      "CONDITIONING"
+    ],
+    [
+      10,
+      "sampler",
+      0,
+      "vae_decode",
+      0,
+      "LATENT"
+    ],
+    [
+      11,
+      "checkpoint_loader",
+      1,
+      "lora_loader",
+      1,
+      "CLIP"
+    ],
+    [
+      12,
+      "vae_decode",
+      0,
+      2,
+      0,
+      "IMAGE"
+    ],
+    [
+      13,
+      2,
+      0,
+      3,
+      0,
+      "STRING"
+    ],
+    [
+      14,
+      "vae_decode",
+      0,
+      4,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.7513148009015777,
+      "offset": [
+        361.0104074046759,
+        441.06090775629775
+      ]
+    },
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}

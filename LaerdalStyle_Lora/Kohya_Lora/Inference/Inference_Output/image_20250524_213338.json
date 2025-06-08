@@ -1,0 +1,11 @@
+{
+    "prompt": "Laerdalstyle, faceless, minimalistic vector illustration of a dark-skinned man with black hair and a beard, wearing a light aqua jacket, a dark blue shirt, matching light aqua pants, and blue shoes. He is depicted in a walking pose with his arms relaxed. The illustration follows a flat design style, with no visible facial features except for the beard and mustache, set against a plain white background.",
+    "negative_prompt": "multiple people, group, crowd, second person, extra limbs, red background, orange background, colorful background, cropped, cut off, close-up, shadows, detailed face, facial features",
+    "base_model": "runwayml/stable-diffusion-v1-5",
+    "lora_path": "C:\\Users\\Laerdal\\Desktop\\New folder\\dna-ds-master2025-stable-diffusion\\LaerdalStyle_Lora\\Kohya_Lora",
+    "lora_weights": "Laerstyle_LoRa_With_Kohya.safetensors",
+    "steps": 30,
+    "guidance_scale": 9.0,
+    "timestamp": "20250524_213338",
+    "output_image": "C:\\Users\\Laerdal\\Desktop\\New folder\\dna-ds-master2025-stable-diffusion\\LaerdalStyle_Lora\\Kohya_Lora\\Inference\\Output\\image_20250524_213338.png"
+}
