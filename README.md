@@ -14,6 +14,7 @@ in collaboration with **Laerdal Medical**.
 - [Inference: Generate Images with LoRA](#inference-generate-images-with-lora)
 - [Acknowledgments](#acknowledgments)
 - [Contributing](#contributing)
+- [Authors](#authors)
 
 
 ---
@@ -135,18 +136,16 @@ We trained LoRA models on two diffusion bases:
 
 3. Run the training script with the following arguments:
    ```bash
+    poetry run python Lora_train.py \
+      --pretrained_model="runwayml/stable-diffusion-v1-5" \
+      --train_data_dir="/mnt/c/Users/Laerdal/Desktop/dna-ds-master2025-stable-diffusion/Dataset/SD-v-1.5/1_trainimages" \
+      --output_dir="/mnt/c/Users/Laerdal/Desktop/dna-ds-master2025-stable-diffusion/LaerdalStyle_Lora/Python_script/SD-v-1.5/Lora_Output" \
+      --train_batch_size=1 \
+      --learning_rate=1e-4 \
+      --num_train_epochs=10 \
+      --checkpointing_steps=500 \
+      --lora_rank=4
 
-   python Lora_train.py \
-    --pretrained_model="runwayml/stable-diffusion-v1-5" \
-    --train_data_dir="./dataset" \
-    --output_dir="./lora_models/sd15_lora_python" \
-    --resolution=512 \
-    --train_batch_size=1 \
-    --learning_rate=1e-4 \
-    --num_train_epochs=10 \
-    --checkpointing_steps=500 \
-    --lora_rank=4 \
-    --lora_alpha=16
 
 
 ### SDXL Training (Python Only)
@@ -168,21 +167,22 @@ We also support LoRA training on **Stable Diffusion XL (SDXL 1.0)** using a cust
 
 3. Start training:
    ```bash
-    poetry run python train_SDXL_LoRa.py \
-    --pretrained_model_name_or_path="stabilityai/stable-diffusion-xl-base-1.0" \
-    --train_data_dir="/mnt/c/Users/Laerdal/Desktop/dna-ds-master2025-stable-diffusion/Dataset/SDXL-v-1.0/1_Images" \
-    --output_dir="/mnt/c/Users/Laerdal/Desktop/dna-ds-master2025-stable-diffusion/LoRA_output" \
-    --resolution=1024 \
-    --train_batch_size=1 \
-    --gradient_accumulation_steps=1 \
-    --learning_rate=1e-5 \
-    --mixed_precision="fp16" \
-    --train_text_encoder \
-    --gradient_checkpointing \
-    --checkpointing_steps=100 \
-    --checkpoints_total_limit=7 \
-    --max_train_steps=500 \
-    --seed=42
+   poetry run python train_SDXL_LoRa.py \
+     --pretrained_model_name_or_path="stabilityai/stable-diffusion-xl-base-1.0" \
+     --train_data_dir="/mnt/c/Users/Laerdal/Desktop/Thesis/dna-ds-master2025-stable-diffusion/Dataset/SDXL-v-1.0/1_Images" \
+     --output_dir="/mnt/c/Users/Laerdal/Desktop/Thesis/dna-ds-master2025-stable-diffusion/LaerdalStyle_Lora/Python_script/SDXL_v1.0/SDXL_LoRa_Output" \
+     --resolution=1024 \
+     --train_batch_size=1 \
+     --gradient_accumulation_steps=1 \
+     --learning_rate=1e-5 \
+     --mixed_precision="fp16" \
+     --train_text_encoder \
+     --gradient_checkpointing \
+     --checkpointing_steps=100 \
+     --checkpoints_total_limit=7 \
+     --max_train_steps=500 \
+     --seed=42
+
 
 ------
 
@@ -292,9 +292,15 @@ We appreciate all contributions that help make this project better.
 
 
 
+## Authors
 
-   
+This thesis project was developed by:
 
+- **Md Safin Sarker**  
+  📧 safinsarker1122@gmail.com  
+
+- **YEMISI TEJU OLASOJI**  
+  📧 yemisiteju8@gmail.com  
 
 
    

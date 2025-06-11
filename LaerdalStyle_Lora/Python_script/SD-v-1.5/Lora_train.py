@@ -4,15 +4,14 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
-from tqdm.auto import tqdm
 import random
 
 from transformers import CLIPTokenizer, CLIPTextModel
 from diffusers import UNet2DConditionModel, AutoencoderKL, DDPMScheduler
-from diffusers.utils import replace_lora_layers, save_lora_weights
+from diffusers.models.attention_processor import LoRAAttnProcessor
 from diffusers.utils.import_utils import is_xformers_available
 
-# Custom dataset loader
+
 class LaerdalStyleDataset(Dataset):
     def __init__(self, data_dir, tokenizer, size=512):
         self.tokenizer = tokenizer
@@ -61,18 +60,37 @@ class LaerdalStyleDataset(Dataset):
             "input_ids": encoded["input_ids"][0]
         }
 
+
+def inject_lora_attn_processors(unet, rank):
+    injected_layers = []
+    for name, module in unet.named_modules():
+        if hasattr(module, "set_attn_processor"):
+            try:
+                if hasattr(module, "to_q") and hasattr(module, "to_k"):
+                    hidden_size = module.to_q.in_features
+                    cross_attention_dim = module.to_k.in_features
+                    lora = LoRAAttnProcessor(
+                        hidden_size=hidden_size,
+                        cross_attention_dim=cross_attention_dim,
+                        rank=rank
+                    )
+                    module.set_attn_processor(lora)
+                    injected_layers.append(name)
+            except Exception as e:
+                print(f" Error injecting into {name}: {e}")
+
+
 def train(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Training on: {device}")
 
-    # Load pretrained components
     tokenizer = CLIPTokenizer.from_pretrained(args.pretrained_model, subfolder="tokenizer")
     text_encoder = CLIPTextModel.from_pretrained(args.pretrained_model, subfolder="text_encoder").to(device)
     vae = AutoencoderKL.from_pretrained(args.pretrained_model, subfolder="vae").to(device)
     unet = UNet2DConditionModel.from_pretrained(args.pretrained_model, subfolder="unet").to(device)
 
-    # Inject LoRA into UNet
-    unet = replace_lora_layers(unet, rank=args.lora_rank, alpha=args.lora_alpha)
+    inject_lora_attn_processors(unet, rank=args.lora_rank)
+
     if is_xformers_available():
         unet.enable_xformers_memory_efficient_attention()
 
@@ -111,12 +129,15 @@ def train(args):
             print(f"Epoch {epoch+1} | Step {step+1} | Loss: {loss.item():.6f}")
 
             if global_step % args.checkpointing_steps == 0:
-                save_lora_weights(unet, os.path.join(args.output_dir, f"checkpoint-{global_step}"), safe_serialization=True)
+                checkpoint_dir = os.path.join(args.output_dir, f"checkpoint-{global_step}")
+                os.makedirs(checkpoint_dir, exist_ok=True)
+                unet.save_attn_procs(checkpoint_dir)
 
     os.makedirs(args.output_dir, exist_ok=True)
-    save_lora_weights(unet, args.output_dir, safe_serialization=True)
+    unet.save_attn_procs(args.output_dir)
     tokenizer.save_pretrained(args.output_dir)
     print("✅ Training complete. LoRA saved.")
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -128,8 +149,8 @@ def parse_args():
     parser.add_argument("--learning_rate", type=float, default=1e-4)
     parser.add_argument("--checkpointing_steps", type=int, default=500)
     parser.add_argument("--lora_rank", type=int, default=4)
-    parser.add_argument("--lora_alpha", type=int, default=16)
     return parser.parse_args()
+
 
 if __name__ == "__main__":
     args = parse_args()
